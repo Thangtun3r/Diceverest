@@ -20,6 +20,7 @@ public class DiceManager : MonoBehaviour
         Instance = this;
     }
 
+    //Receives a Dice object and registers it
     private void RegisterAllDice()
     {
         diceList.Clear();
@@ -38,6 +39,7 @@ public class DiceManager : MonoBehaviour
         diceList.Remove(dice);
     }
 
+    // Rolls all dice in the scene and updates the total
     public void RollAll()
     {
         RefreshDiceList(); // scan for dice in scene
@@ -50,7 +52,7 @@ public class DiceManager : MonoBehaviour
         UpdateTotal();
     }
 
-    
+    // This will update the dicelist to avoid issues with destroyed dice (Can cause dice total delay)
     private void RefreshDiceList()
     {
         diceList.Clear();
@@ -58,6 +60,7 @@ public class DiceManager : MonoBehaviour
         diceList.AddRange(allDice);
     }
     
+    //Just an update  
     public void UpdateTotal()
     {
         int total = 0;

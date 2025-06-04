@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f6d85d139aee44198c682eb63b6f2c, type: 3}
+  m_Name: D6 Dice Data
+  m_EditorClassIdentifier: 
+  faces:
+  - {fileID: 11400000, guid: cf6242bcb6421a04da7af22661b5773b, type: 2}
+  - {fileID: 11400000, guid: e6dd8d3b8f746134393615f23f2e67c5, type: 2}
+  - {fileID: 11400000, guid: 00a69a0756e8089469ad3eb4e7397c05, type: 2}
+  - {fileID: 11400000, guid: 1329cc3f599184f4990ed83fcff44066, type: 2}
+  - {fileID: 11400000, guid: ef0f96aa386853048848fa4ae5c0f3d7, type: 2}
+  - {fileID: 11400000, guid: 287deeee0fce36d42825d3954d6ff144, type: 2}

@@ -4,11 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DiceExcutor : MonoBehaviour
+public class DiceExcutor : MonoBehaviour,IExecutable
 {
+    public static DiceExcutor Instance { get; private set; }
     private Dice dice;
     public List<Dice> diceHolders;
     private Camera camera;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -18,55 +31,46 @@ public class DiceExcutor : MonoBehaviour
 
     private void Update()
     {
-        Select();
-        Deselect();
+        HandleSelection();
     }
 
    
-    private void Select()
+    private void HandleSelection()
     {
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            Vector2 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+            if (hit.collider != null && hit.collider.CompareTag("Dice"))
             {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-                
-                //check if the raycast hit a collider tagged as "Dice"
-                if(hit.collider != null && hit.collider.gameObject.CompareTag("Dice"))
+                IDiceSelectable selectable = hit.collider.GetComponent<IDiceSelectable>();
+                Dice dice = hit.collider.GetComponent<Dice>();
+
+                if (selectable != null && dice != null)
                 {
-                    IDiceSelectable selectable = hit.collider.GetComponent<IDiceSelectable>();
-                    Dice dice = hit.collider.GetComponent<Dice>();
-                    
-                    // If the selectable is not null and the dice is not already in the list, add it yeh
-                    if (selectable != null && dice != null && !diceHolders.Contains(dice) && dice.CurrentState == InteractionState.Deselected);
+                    if (diceHolders.Contains(dice))
+                    {
+                        diceHolders.Remove(dice);
+                        selectable.HandleSelection(InteractionState.Deselected);
+                    }
+                    else if (dice.CurrentState == InteractionState.Deselected)
                     {
                         diceHolders.Add(dice);
-                        selectable.HandleSelection(InteractionState.Selected); // Interface call
+                        selectable.HandleSelection(InteractionState.Selected);
                     }
                 }
             }
         }
-
     }
-
-    private void Deselect()
+    
+    
+    public void Execute()
     {
-        if (Input.GetMouseButtonDown(0))
+        Debug.unityLogger.Log("DiceExcutor");
+        foreach (Dice d in diceHolders)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            
-            if(hit.collider != null && hit.collider.gameObject.CompareTag("Dice"))
-            {
-                IDiceSelectable selectable = hit.collider.GetComponent<IDiceSelectable>();
-                Dice dice = hit.collider.GetComponent<Dice>();
-                    
-                // If the selectable is not null and the dice is not already in the list, add it yeh
-                if (selectable != null && dice != null && !diceHolders.Contains(dice) && dice.CurrentState == InteractionState.Selected);
-                {
-                    diceHolders.Remove(dice);
-                }
-            }
+            d.RollDice();
         }
     }
 }

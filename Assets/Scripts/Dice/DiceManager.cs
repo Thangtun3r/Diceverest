@@ -19,6 +19,10 @@ public class DiceManager : MonoBehaviour
         }
         Instance = this;
     }
+    private void Update()
+    {
+        UpdateTotal();
+    }
 
     //Receives a Dice object and registers it
     private void RegisterAllDice()
@@ -72,4 +76,6 @@ public class DiceManager : MonoBehaviour
         if (totalText != null)
             totalText.text = total.ToString();
     }
+
+  
 }

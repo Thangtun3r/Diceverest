@@ -3,13 +3,16 @@ using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Dice : MonoBehaviour {
+public class Dice : MonoBehaviour, IDiceSelectable
+{
     public DiceDefinition diceDefinition;
     public SpriteRenderer DiceFaceRenderer;
-
     private DiceFace currentFace;
     public int diceValue => currentFace != null ? currentFace.value : 0;
+    public InteractionState CurrentState = InteractionState.Deselected;
+    
 
+    
     private void Start()
     {
         DiceFaceRenderer = GetComponent<SpriteRenderer>();
@@ -35,4 +38,22 @@ public class Dice : MonoBehaviour {
         }
         DiceFaceRenderer.sprite = currentFace.icon;
     }
+
+    public void HandleSelection(InteractionState state)
+    {
+        CurrentState = state;
+        switch (state)
+        {
+            case InteractionState.Hovered:
+                // Handle hover state
+                break;
+            case InteractionState.Selected:
+                
+                break;
+            case InteractionState.Deselected:
+                // Handle deselected state
+                break;
+        }
+    }
+    
 }
